@@ -41,11 +41,8 @@ class Parser
   def flush_content
     html = @content_stack.map(&:to_s).join("\n")
 
-    # Extract plain text
-    text = PandocRuby.convert(html, { from: :html, to: :plain }, '--wrap=none').chomp.gsub(/(\r?\n)+/, "\n")
-
     puts '>---'
-    puts text
+    puts html
     puts "<---\n\n"
     @content_stack.clear
   end
