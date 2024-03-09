@@ -1,11 +1,13 @@
-source "https://rubygems.org"
+# frozen_string_literal: true
 
-gem "nokogiri"
-gem "pandoc-ruby"
+source 'https://rubygems.org'
+
+gem 'nokogiri'
+gem 'pandoc-ruby'
 
 group :development, :test do
-  gem "byebug", require: true
-  gem "rspec"
-  gem "rubocop"
-  gem "rubocop-govuk", require: false
+  gem 'byebug', require: true
+  gem 'rspec'
+  gem 'rubocop'
+  gem 'rubocop-govuk', require: false
 end
