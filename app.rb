@@ -15,6 +15,7 @@ class Parser
   def parse
     @doc.children.each do |node|
       if node.is_a?(Nokogiri::XML::Element) && node.name.match?(/h[1-6]/)
+        flush_content
         handle_heading(node)
       else
         @content_stack.push(node)
@@ -26,7 +27,6 @@ class Parser
   private
 
   def handle_heading(heading)
-    flush_content
     level = heading.name[1].to_i
 
     # Remove any siblings and their descendants from the stack
