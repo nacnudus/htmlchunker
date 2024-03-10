@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'json'
 require 'nokogiri'
 require 'pandoc-ruby'
 
@@ -10,6 +11,7 @@ class Parser
     @levels_stack = []
     @content_stack = []
     @previous_level = 0
+    @output_html = []
   end
 
   def parse
@@ -22,6 +24,7 @@ class Parser
       end
     end
     flush_content
+    @output_html.to_json
   end
 
   private
@@ -40,10 +43,7 @@ class Parser
 
   def flush_content
     html = @content_stack.map(&:to_s).join("\n")
-
-    puts '>---'
-    puts html
-    puts "<---\n\n"
+    @output_html.push(html)
     @content_stack.clear
   end
 end
@@ -52,4 +52,4 @@ end
 
 html = File.read('example.html')
 parser = Parser.new(html)
-parser.parse
+puts(parser.parse)
