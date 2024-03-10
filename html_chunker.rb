@@ -2,9 +2,8 @@
 
 require 'json'
 require 'nokogiri'
-require 'pandoc-ruby'
 
-class Parser
+class HTMLChunker
   def initialize(html)
     @doc = Nokogiri::HTML.fragment(html)
     @headings_stack = []
@@ -14,7 +13,7 @@ class Parser
     @output_html = []
   end
 
-  def parse
+  def chunk
     @doc.children.each do |node|
       if node.is_a?(Nokogiri::XML::Element) && node.name.match?(/h[1-6]/)
         flush_content
@@ -33,7 +32,10 @@ class Parser
     level = heading.name[1].to_i
 
     # Remove any siblings and their descendants from the stack
-    @headings_stack.pop until @levels_stack.pop <= level if level <= @previous_level
+    if level <= @previous_level
+      @headings_stack.pop until @levels_stack.pop == level
+      @headings_stack.pop
+    end
 
     @headings_stack.push(heading)
     @levels_stack.push(level)
@@ -42,14 +44,10 @@ class Parser
   end
 
   def flush_content
-    html = @content_stack.map(&:to_s).join("\n")
+    return if @content_stack.empty?
+
+    html = @content_stack.map(&:to_s).join
     @output_html.push(html)
     @content_stack.clear
   end
 end
-
-# Example usage
-
-html = File.read('example.html')
-parser = Parser.new(html)
-puts(parser.parse)
