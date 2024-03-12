@@ -2,19 +2,25 @@
 
 RAG search works well with text that has been split into small chunks. Splitting at headings and subheadings seems natural, but important context can be lost. lost. Some context can be regained by repeating higher headings alongside the subheading of each chunk.
 
-## Example
+## Usage
 
-Here is a document to be split into chunks by heading and subheading.
+```ruby
+require './htmlchunker'
 
-```html
-<h1>How to lose a guy in 10 days</h1>
-
+html = %{<h1>How to lose a guy in 10 days</h1>
 Tips for how to get dumped, deliberately.
-
 <h2>Dating tips</h2>
+Make him miss seeing his team's final, winning shot.}
 
-Make him miss seeing his team's final, winning shot.
+HTMLChunker.new(html).chunk.chunks
 ```
+
+```text
+=> ["<h1>How to lose a guy in 10 days</h1>\nTips for how to get dumped, deliberately.\n",
+ "<h1>How to lose a guy in 10 days</h1><h2>Dating tips</h2>\nMake him miss seeing his team's final, winning shot."]
+```
+
+## If you don't use this
 
 The chunks would be as below. The second chunk would omit crucial context.
 
@@ -30,7 +36,7 @@ Tips for how to get dumped, deliberately.
 Make him miss seeing his team's final, winning shot.
 ```
 
-Instead, repeat the `<h1>` heading alongside the `<h2>` heading so that some of the context is retained in the second chunk.
+htmlchunker repeats the `<h1>` heading alongside the `<h2>` heading so that some of the context is retained in the second chunk.
 
 ```html
 <h1>How to lose a guy in 10 days</h1>

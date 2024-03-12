@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'json'
 require 'nokogiri'
 
 class HTMLChunker
@@ -23,7 +22,11 @@ class HTMLChunker
       end
     end
     flush_content
-    @output_html.to_json
+    self
+  end
+
+  def chunks
+    @output_html
   end
 
   private
