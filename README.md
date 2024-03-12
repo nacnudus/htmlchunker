@@ -48,9 +48,10 @@ Create a stack for headings and a stack for content. Each stack will contain HTM
 1. Initialise the heading level to 0.
 2. Find the next node.
 3. If it is a heading node, then
-    a. Flush the content stack.
-    b. Pop the headings stack until it contains only ancestors of the found node.
-    c. Push a clone of each item in the headings stack onto the content stack.
+   1. Flush the content stack.
+   2. Pop the headings stack until it contains only ancestors of the found node.
+   3. Push a clone of each item in the headings stack onto the content stack.
+
    Otherwise, push the node onto the content stack.
 4. Repeat until there are no more nodes.
 5. Flush the content stack.
